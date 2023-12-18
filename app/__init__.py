@@ -20,7 +20,11 @@ def create_app(test_config=None):
     CSRFProtect(app)
 
     from .user import user_bp as user_blueprint
+    from .user import course_bp as course_blueprint
+    from .user import student_bp as student_blueprint
     app.register_blueprint(user_blueprint)
-
+    app.register_blueprint(course_blueprint)
+    app.register_blueprint(student_blueprint)
+    
 
     return app

@@ -15,7 +15,7 @@
             </div>
             
             <div class="col-md-5 m-2 mx-auto text-center">
-                <form method="GET" action="" class="d-flex">
+                <form method="GET" action="{{ url_for('.search_college') }}" class="d-flex">
                     <div class="input-group mb-3 me-3 w-75 p-0">
                         <label class="input-group-text" for="filter_by">Filter by</label>
                         <select class="form-select form-control-sm" id="filter_by" name="filter_by">
@@ -93,7 +93,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">Add College</h5>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ url_for('user.college') }}" id="college_form">
+                    <form method="POST" action="{{ url_for('.college_db') }}" id="college_form">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                         <div class="form-group">
                             <label for="collegeCode">College Code</label>

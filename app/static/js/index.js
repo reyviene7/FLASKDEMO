@@ -28,7 +28,7 @@ function confirmDeleteCourse(button) {
     var course_code = button.getAttribute('course-code');
     var csrfToken = button.getAttribute('csrf-token');
     if (confirm("Are you sure you want to delete Course " + course_code + " permanently?\nStudents under this course will also be deleted.")) {
-        fetch(`/course/delete_course/${course_code}`, {
+        fetch(`/delete_course/${course_code}`, {
             method: 'DELETE',
             headers: {
                 'X-CSRFToken': csrfToken
@@ -36,9 +36,12 @@ function confirmDeleteCourse(button) {
         })
         .then(response => response.json())
         .then(data => {
+            console.log("Data received:", data);
             if (data.success === true) {
+                console.log("Reloading the page...");
                 window.location.reload();
             } else {
+                window.location.reload();
                 console.error("Error: " + data.message);
             }
         });
@@ -50,16 +53,19 @@ function confirmDeleteStudent(button) {
     var student_id = button.getAttribute('student-id');
     var csrfToken = button.getAttribute('csrf-token');
     if (confirm("Are you sure you want to delete Student " + student_id + " permanently ?\n")) {
-        fetch(`/student/delete_student/${student_id}`, {  // Updated URL
+        fetch(`/delete_student/${student_id}`, { 
             method: 'DELETE',
             headers: {
                 'X-CSRFToken': csrfToken
             }
         }).then(response => response.json())
         .then(data => {
+            console.log("Data received:", data);
             if(data.success == true) {
+            console.log("Reloading the page...");
             window.location.reload();
             } else {
+            window.location.reload();
             console.error("Error: " + data.message);
             }
         });
