@@ -168,8 +168,12 @@ def update_student(student_id):
 def search_student():
     courses = m_course.get_courses()
 
-    search_query = request.form.get('search')
-    filter_by = request.form.get('filter_by')
+    if request.method == 'POST':
+        search_query = request.form.get('search')
+        filter_by = request.form.get('filter_by')
+    else:
+        search_query = request.args.get('search')
+        filter_by = request.args.get('filter_by')    
     
     if filter_by == 'id':
         students = m_student.search_students_by_id(search_query)
