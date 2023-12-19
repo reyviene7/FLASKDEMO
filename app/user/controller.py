@@ -136,7 +136,24 @@ def student():
         course = request.form.get('course')
         year = request.form.get('year')
         gender = request.form.get('gender')
-        m_student.add_student(id, firstname, lastname, course, year, gender)
+        
+        image_url = None
+        if 'image' in request.files:
+            image = request.files['image']
+            if image.filename != '':
+                # Attempt to upload the image
+                image_url = m_student.upload_image(image)
+
+                # If the image upload fails (returns None), flash an error and do not create the student
+                if image_url is None:
+                    return redirect(request.url)
+
+        # Set the default image URL
+        default_image_url = "https://res.cloudinary.com/dzwjjpvdb/image/upload/v1702977617/SSIS_CLOUDINARY/user_profile_fcfymn.jpg"
+        if image_url is None:
+            image_url = default_image_url
+            
+        m_student.add_student(id, firstname, lastname, course, year, gender, image_url)
         print(f"Received data - id: {id}, Name: {firstname} {lastname}, Course: {course}, Year: {year}, Gender: {gender} ")
 
     students = m_student.get_students()
@@ -160,7 +177,20 @@ def update_student(student_id):
     new_course = request.form['course']
     new_year = request.form['year']
     new_gender = request.form['gender']
-    m_student.update_student(student_id, new_id, new_firstname, new_lastname, new_course, new_year, new_gender)
+    
+    # Get the existing student data
+    existing_student = m_student.get_student_by_id(student_id)
+
+    if 'image' in request.files:
+        new_image = request.files['image']
+        if new_image.filename != '':
+            new_image_url = m_student.upload_image(new_image)
+        else:
+            new_image_url = existing_student.get('image_url')
+    else:
+        new_image_url = existing_student.get('image_url')
+    
+    m_student.update_student(student_id, new_id, new_firstname, new_lastname, new_course, new_year, new_gender, new_image_url)
     
     return redirect(url_for('user.student', student_id=student_id))
 
