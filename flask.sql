@@ -14,10 +14,10 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Dumping database structure for ccc151_cs
-DROP DATABASE IF EXISTS `ccc151_cs`;
-CREATE DATABASE IF NOT EXISTS `ccc151_cs` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `ccc151_cs`;
+-- Dumping database structure for ccc151_cs1
+DROP DATABASE IF EXISTS `ccc151_cs1`;
+CREATE DATABASE IF NOT EXISTS `ccc151_cs1` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `ccc151_cs1`;
 
 -- Dumping structure for table ccc151_cs.users
 DROP TABLE IF EXISTS `users`;
@@ -53,24 +53,25 @@ CREATE TABLE IF NOT EXISTS `user_info` (
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
 
-CREATE TABLE IF NOT EXISTS college (
-                code VARCHAR(15) NOT NULL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS College (
+                code VARCHAR(5) NOT NULL PRIMARY KEY,
                 name VARCHAR(50) NOT NULL
 )
 
+CREATE INDEX College ON College (name);
 
 CREATE TABLE IF NOT EXISTS Course (
-                code VARCHAR(20) NOT NULL PRIMARY KEY,
-                name VARCHAR(50) NOT NULL,
-                college VARCHAR(50) NOT NULL,
-                CONSTRAINT fk1 FOREIGN KEY (college) REFERENCES college (name) ON DELETE CASCADE ON UPDATE CASCADE
+                code VARCHAR(10) NOT NULL PRIMARY KEY,
+                name VARCHAR(80) NOT NULL,
+                College VARCHAR(50) NOT NULL,
+                CONSTRAINT fk1 FOREIGN KEY (College) REFERENCES College (name) ON DELETE CASCADE ON UPDATE CASCADE
 )
 
 CREATE TABLE IF NOT EXISTS Student (
                 id VARCHAR(20) NOT NULL PRIMARY KEY,
                 firstname VARCHAR(50) NOT NULL,
                 lastname VARCHAR(50) NOT NULL,
-                course VARCHAR(50) NOT NULL,
+                course VARCHAR(80) NOT NULL,
                 year VARCHAR(10) NOT NULL,
                 gender VARCHAR(20) NOT NULL,
                 CONSTRAINT fk2 FOREIGN KEY (course) REFERENCES course (code) ON DELETE CASCADE ON UPDATE CASCADE

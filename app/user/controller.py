@@ -16,7 +16,7 @@ def college_db():
         name = request.form.get('name')
         m_college.create(code, name)
         flash('College created Successfully!')
-        return redirect(url_for('user.college'))
+        return redirect(url_for('user.college_db'))
 
     colleges = m_college.get_colleges()     
     print(colleges)
@@ -36,7 +36,7 @@ def update_college(college_code):
         new_code = request.form.get('code')
         new_name = request.form.get('name')
         m_college.update_college(college_code, new_code, new_name)
-        return redirect(url_for('user.college'))
+        return redirect(url_for('user.college_db'))
     college = m_college.get_college_by_code(college_code)
     return render_template('college.html', college=college)
      
@@ -72,26 +72,24 @@ def search_college():
 
 @user_bp.route('/course', methods=['GET' , 'POST'])
 def course():
-    colleges = m_college.get_colleges()
+    Colleges = m_college.get_colleges()
     if request.method == 'POST':
         code = request.form.get('code')
         name = request.form.get('name')
-        college = request.form.get('college')
+        College = request.form.get('College')
         
-        print(f"Received data - Code: {code}, Name: {name}, College: {college}")
-
-        m_course.create_course(code, name, college)
+        m_course.create_course(code, name, College)
         flash('Course created Successfully!')
         return redirect(url_for('user.course'))
 
     courses = m_course.get_courses()
     print(courses)
-    return render_template('course.html', courses=courses, title="Course", colleges=colleges)
+    return render_template('course.html', courses=courses, title="Course", Colleges=Colleges)
 
 @user_bp.route('/delete_course/<string:course_code>', methods=['DELETE'])
 def delete_course(course_code):
     if request.method == 'DELETE':
-        flash('College has been deleted Successfully!')
+        flash('Course has been deleted Successfully!')
         result = m_course.delete_course(course_code)
         response = jsonify(result)
         return response
@@ -103,8 +101,8 @@ def update_course(course_code):
     new_college = request.form.get('college')
     m_course.update_course(course_code, new_code, new_name, new_college)
     courses = m_course.get_courses()
-    colleges = m_college.get_colleges()
-    return render_template('course.html', courses=courses, colleges=colleges)
+    Colleges = m_college.get_colleges()
+    return render_template('course.html', courses=courses, Colleges=Colleges)
 
 @user_bp.route('/search_course', methods=['GET'])
 def search_course():
@@ -138,7 +136,6 @@ def student():
         gender = request.form.get('gender')
         
         m_student.add_student(id, firstname, lastname, course, year, gender)
-        print(f"Received data - id: {id}, Name: {firstname} {lastname}, Course: {course}, Year: {year}, Gender: {gender} ")
 
     students = m_student.get_students()
     print(students)

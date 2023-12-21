@@ -52,7 +52,7 @@ class m_college(object):
     @classmethod
     def get_colleges(cls):
         cur = mysql.new_cursor(dictionary=True)
-        cur.execute("SELECT * FROM college")
+        cur.execute("SELECT * FROM College")
         colleges = cur.fetchall()
         cur.close()
         return colleges 
@@ -61,8 +61,7 @@ class m_college(object):
     def delete_college(cls, college_code):
         try:
             cur = mysql.new_cursor(dictionary=True)
-            cur.execute("DELETE FROM college WHERE code = %s", (college_code,))
-            print(f"DELETE FROM college WHERE code = {college_code}")
+            cur.execute("DELETE FROM College WHERE code = %s", (college_code,))
             mysql.connection.commit()
             cur.close()
             return "College deleted successfully"
@@ -83,7 +82,7 @@ class m_college(object):
     @classmethod
     def get_college_by_code(cls, code):
         cur = mysql.new_cursor(dictionary=True)
-        cur.execute("SELECT * FROM college WHERE code = %s", (code,))
+        cur.execute("SELECT * FROM College WHERE code = %s", (code,))
         college = cur.fetchone()
         cur.close()
         return college
@@ -91,7 +90,7 @@ class m_college(object):
     @classmethod
     def search_colleges_by_code(cls, search_query):
         cur = mysql.new_cursor(dictionary=True)
-        cur.execute("SELECT * FROM college WHERE code LIKE %s", (f"%{search_query}%",))
+        cur.execute("SELECT * FROM College WHERE code LIKE %s", (f"%{search_query}%",))
         colleges = cur.fetchall()
         cur.close()
         return colleges
@@ -99,7 +98,7 @@ class m_college(object):
     @classmethod
     def search_colleges_by_name(cls, search_query):
         cur = mysql.new_cursor(dictionary=True)
-        cur.execute("SELECT * FROM college WHERE name LIKE %s", (f"%{search_query}%",))
+        cur.execute("SELECT * FROM College WHERE name LIKE %s", (f"%{search_query}%",))
         colleges = cur.fetchall()
         cur.close()
         return colleges
@@ -107,18 +106,14 @@ class m_college(object):
 
 class m_course:
     @classmethod
-    def create_course(cls, code, name, college):
+    def create_course(cls, code, name, College):
         try:
-            print(f"Inserting into database - Code: {code}, Name: {name}, College: {college}")
-
             cur = mysql.new_cursor(dictionary=True)
-            cur.execute("INSERT INTO course (code, name, college) VALUES (%s, %s, %s)", (code, name, college))
+            cur.execute("INSERT INTO course (code, name, College) VALUES (%s, %s, %s)", (code, name, College))
             mysql.connection.commit()
-            
-            print("Course created successfully")
             return "Course created successfully"
+        
         except Exception as e:
-            print(f"Failed to create course: {str(e)}")
             return f"Failed to create course: {str(e)}"
 
     @classmethod
@@ -143,7 +138,7 @@ class m_course:
     def update_course(cls, course_code, new_code, new_name, new_college):
         try:
             cur = mysql.new_cursor(dictionary=True)
-            cur.execute("UPDATE course SET code = %s, name = %s, college = %s WHERE code = %s", (new_code, new_name, new_college, course_code))
+            cur.execute("UPDATE course SET code = %s, name = %s, College = %s WHERE code = %s", (new_code, new_name, new_college, course_code))
             mysql.connection.commit()
             cur.close()
             return "Course updated successfully"
@@ -169,7 +164,7 @@ class m_course:
     @classmethod
     def search_courses_by_college(cls, search_query):
         cur = mysql.new_cursor(dictionary=True)
-        cur.execute("SELECT * FROM course WHERE college LIKE %s", (f"%{search_query}%",))
+        cur.execute("SELECT * FROM course WHERE College LIKE %s", (f"%{search_query}%",))
         courses = cur.fetchall()
         cur.close()
         return courses
@@ -248,7 +243,7 @@ class m_student:
     @classmethod
     def search_students_by_gender(cls, search_query):
         cur = mysql.new_cursor(dictionary=True)
-        cur.execute("SELECT * FROM student WHERE gender LIKE %s", (f"%{search_query}%",))
+        cur.execute("SELECT * FROM student WHERE gender = %s", (search_query,))
         students = cur.fetchall()
         cur.close()
         return students
